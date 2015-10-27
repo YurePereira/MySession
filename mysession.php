@@ -1,28 +1,29 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
-if (!isset($_SESSION))
-	session_start();
+<?php
 
 /**
- * Classe que possibilita o gerenciamento de modo fácil e rápida de sessions com php.
- *
- * @author Francisco Yure <franciscoyurep@gmail.com>
- * @since 2015-03-17 0.1
- * @version 0.1
- *
- */
+* Classe que possibilita o gerenciamento de modo fácil e rápida de sessions com php.
+*
+* @author Francisco Yure <franciscoyurep@gmail.com>
+* @since 2015-03-17 0.1
+* @version 0.1.1
+*
+*/
 class MySession {
 
-	private $session_expire;
+	private $sessExpire;
 
 	public function __construct()
 	{
-
-		$this->set_session_expire(30)
-
+		$this->startSess();
 	}
 
-	public function set_sess($sess, $sessValue = null)
+	private function startSess()
+	{
+		if (!isset($_SESSION))
+			session_start();
+	}
+
+	public function setSess($sess, $sessValue = null)
 	{
 
 		if (is_array($sess) && $sessValue == null) {
@@ -37,11 +38,11 @@ class MySession {
 
 	}
 
-	public function get_sess($sess_name)
+	public function getSess($sessName)
 	{
 
-		if ($this->has_sess($sess_name)) {
-			$sess = $_SESSION[$sess_name];
+		if ($this->hasSess($sessName)) {
+			$sess = $_SESSION[$sessName];
 			return $sess;
 		}
 
@@ -49,27 +50,27 @@ class MySession {
 
 	}
 
-	public function has_sess($sess_name)
+	public function hasSess($sessName)
 	{
-		return isset($_SESSION[$sess_name]);
+		return isset($_SESSION[$sessName]);
 	}
 
-	public function unset_sess($sess_name)
+	public function unsetSess($sessName)
 	{
 
-		if (is_array($sess_name)) {
+		if (is_array($sessName)) {
 
-			foreach ($sess_name as $key => $value) {
+			foreach ($sessName as $key => $value) {
 				unset($_SESSION[$key]);
 			}
 
-		} else if (!is_array($sess_name)) {
-			unset($_SESSION[$sess_name]);
+		} else if (!is_array($sessName)) {
+			unset($_SESSION[$sessName]);
 		}
 
 	}
 
-	public function desploy_sess()
+	public function desploySess()
 	{
 
 		unset($_SESSION);
@@ -78,15 +79,17 @@ class MySession {
 
 	}
 
-	public function set_session_expire($session_expire)
+	public function setSessExpire($sessExpire)
 	{
 
-		$this->session_expire = $session_expire;
-		session_cache_expire($this->session_expire);
+		session_write_close();
+		$this->sessExpire = $sessExpire;
+		session_cache_expire($this->sessExpire);
+		$this->startSess();
 
 	}
 
-	public function get_all_sess()
+	public function getAllSess()
 	{
 
 		$sess = array();
