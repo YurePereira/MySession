@@ -15,19 +15,21 @@ class MySession {
 
 	private $session_expire = 30;
 
-	public function __construct() {
-		session_cache_expire( $this->session_expire );
+	public function __construct()
+	{
+		session_cache_expire($this->session_expire);
 	}
 
-	public function set_sess($sess, $sessValue = null) {
+	public function set_sess($sess, $sessValue = null)
+	{
 
-		if ( is_array($sess) && $sessValue == null ) {
+		if (is_array($sess) && $sessValue == null) {
 
 			foreach ($sess as $key => $value) {
 				$_SESSION[$key] = $value;
 			}
 
-		} else if ( !is_array($sess) && $sessValue != null ) {
+		} else if (!is_array($sess) && $sessValue != null) {
 			$_SESSION[$sess] = $sessValue;
 		}
 
@@ -36,7 +38,7 @@ class MySession {
 	public function get_sess($sess_name)
 	{
 
-		if ( $this->has_sess($sess_name) ) {
+		if ($this->has_sess($sess_name)) {
 			$sess = $_SESSION[$sess_name];
 			return $sess;
 		}
@@ -53,14 +55,14 @@ class MySession {
 	public function unset_sess($sess_name)
 	{
 
-		if ( is_array($sess_name) ) {
+		if (is_array($sess_name)) {
 
 			foreach ($sess_name as $key => $value) {
-				unset( $_SESSION[$key] );
+				unset($_SESSION[$key]);
 			}
 
-		} else if ( !is_array($sess_name) ) {
-			unset( $_SESSION[$sess_name] );
+		} else if (!is_array($sess_name)) {
+			unset($_SESSION[$sess_name]);
 		}
 
 	}
@@ -72,6 +74,11 @@ class MySession {
 		session_unset();
 		session_destroy();
 
+	}
+
+	public function set_session_expire($session_expire)
+	{
+		$this->session_expire = $session_expire;
 	}
 
 	public function get_all_sess()
