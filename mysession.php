@@ -13,11 +13,13 @@ if (!isset($_SESSION))
  */
 class MySession {
 
-	private $session_expire = 30;
+	private $session_expire;
 
 	public function __construct()
 	{
-		session_cache_expire($this->session_expire);
+
+		$this->set_session_expire(30)
+
 	}
 
 	public function set_sess($sess, $sessValue = null)
@@ -78,7 +80,10 @@ class MySession {
 
 	public function set_session_expire($session_expire)
 	{
+
 		$this->session_expire = $session_expire;
+		session_cache_expire($this->session_expire);
+
 	}
 
 	public function get_all_sess()
